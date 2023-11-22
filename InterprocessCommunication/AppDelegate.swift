@@ -10,18 +10,17 @@ import Cocoa
 import ServiceManagement
 
 private func activateLoginItems(from bundle: Bundle, using fileManager: FileManager) {
-	let loginItemsFolder = bundle.bundleURL.appendingPathComponent("Contents").appendingPathComponent("Library").appendingPathComponent("LoginItems")
-	let items = try! fileManager.contentsOfDirectory(atPath: loginItemsFolder.path)
+    let loginItemsPath = bundle.bundleURL.appendingPathComponent("Contents").appendingPathComponent("Library").appendingPathComponent("LoginItems").appendingPathComponent("Bridge.app")
 
-	for item in items {
-		guard
-			let bundle = Bundle(path: item),
-			let bundleIdentifier = bundle.bundleIdentifier
-		else { continue }
-		if !SMLoginItemSetEnabled(bundleIdentifier as CFString, true) {
-			print("Unable to enable \(bundleIdentifier)")
-		}
-	}
+    guard
+        let bundle = Bundle(path: loginItemsPath.path),
+        let bundleIdentifier = bundle.bundleIdentifier
+    else {
+        return;
+    }
+    if !SMLoginItemSetEnabled(bundleIdentifier as CFString, true) {
+        print("Unable to enable \(bundleIdentifier)")
+    }
 }
 
 @NSApplicationMain
